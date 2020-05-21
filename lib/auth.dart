@@ -58,4 +58,8 @@ class Auth {
     final map = jsonDecode(response);
     return SuccessfulLoginResponse.fromJson(map);
   }
+
+  Future<void> logout() async {
+    await this.preferences.remove(RESPONSE_KEY);
+  }
 }

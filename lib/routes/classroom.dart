@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/components/app_drawer.dart';
 
-class HomeRoute extends StatefulWidget {
-  static const ROUTE_NAME = "Home";
+class ClassroomsRoute extends StatelessWidget {
+  static const ROUTE_NAME = '/classrooms';
 
-  @override
-  _HomeRouteState createState() => _HomeRouteState();
-}
-
-class _HomeRouteState extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +11,7 @@ class _HomeRouteState extends State<HomeRoute> {
         title: const Text('Scolendar'),
       ),
       drawer: AppDrawer(),
-      body: Center(child: Text('home!')),
+      body: Center(child: Text('Classroom')),
     );
   }
 }
