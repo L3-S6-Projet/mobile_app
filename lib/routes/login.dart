@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_scolendar/api_exception.dart';
 import 'package:mobile_scolendar/auth.dart';
+import 'package:mobile_scolendar/routes/home.dart';
 import 'package:openapi/api.dart';
 
 class LoginRoute extends StatefulWidget {
@@ -19,29 +21,36 @@ class _LoginRouteState extends State<LoginRoute> {
 
   bool enabled = true;
   bool obscureText = true;
+  String errorMessage;
 
   void onSubmit() async {
-    if (_formKey.currentState.validate()) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    setState(() {
+      enabled = false;
+    });
+
+    var response;
+
+    try {
+      response = await login();
+    } catch (e) {
+      print("Exception when calling AuthApi->login: $e\n");
+
       setState(() {
-        enabled = false;
+        enabled = true;
+        errorMessage = getErrorMessageFromException(e);
       });
 
-      try {
-        final response = await login();
-        print(response);
-
-        final auth = await Auth.instance();
-        await auth.logIn(response);
-      } catch (e) {
-        print("Exception when calling AuthApi->login: $e\n");
-
-        setState(() {
-          enabled = true;
-        });
-      }
-    } else {
-      print('nop');
+      return;
     }
+
+    var auth = await Auth.instance();
+    await auth.logIn(response);
+
+    Navigator.pushReplacementNamed(context, HomeRoute.ROUTE_NAME);
   }
 
   Future<SuccessfulLoginResponse> login() async {
@@ -79,6 +88,12 @@ class _LoginRouteState extends State<LoginRoute> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Spacer(),
+                      if (errorMessage != null)
+                        Text(
+                          errorMessage,
+                          style: TextStyle(color: theme.errorColor),
+                        ),
                       TextFormField(
                         controller: usernameController,
                         validator: this.validator,

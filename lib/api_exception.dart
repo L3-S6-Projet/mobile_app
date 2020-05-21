@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:openapi/api.dart';
+
 const UNKNOWN_ERROR = "Erreur inconnue.";
 const INTERNAL_ERROR = "Erreur interne.";
 
@@ -33,5 +37,14 @@ const KEYS = <String, String>{
 };
 
 String getErrorMessage(String code) {
+  print('?? : ' + code);
   return KEYS[code] ?? UNKNOWN_ERROR;
+}
+
+String getErrorMessageFromException(Exception e) {
+  if (e is ApiException) {
+    return getErrorMessage(jsonDecode(e.message)['code']);
+  }
+
+  return UNKNOWN_ERROR;
 }
