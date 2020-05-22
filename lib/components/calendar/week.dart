@@ -25,7 +25,6 @@ class HourlyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cellHeight = MediaQuery.of(context).size.height / 10;
-    print(week);
 
     final events = <WeekViewEvent>[];
 

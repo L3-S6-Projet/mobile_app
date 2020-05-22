@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/components/calendar/calendar.dart';
 import 'package:mobile_scolendar/components/calendar/view.dart';
 
-List<Widget> appBarActions(BuildContext context,
-    Function(CalendarView) callback, PageController pageController) {
+List<Widget> appBarActions({
+  @required BuildContext context,
+  @required Function(CalendarView) callback,
+  @required Function() onToday,
+}) {
   return [
     Tooltip(
       message: "Aujourd'hui",
@@ -14,7 +17,8 @@ List<Widget> appBarActions(BuildContext context,
               duration: Duration(milliseconds: 400), curve: Curves.easeInOut);*/
 
           // TODO: this does not work properly
-          pageController.jumpToPage(OFFSET);
+          //pageController.jumpToPage(OFFSET);
+          onToday();
         },
       ),
     ),

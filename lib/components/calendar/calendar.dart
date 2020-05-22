@@ -17,6 +17,7 @@ const OFFSET = 1000;
 class Calendar extends StatefulWidget {
   final CalendarView view;
   final PageController pageController;
+  final int todayReset;
 
   static buildPageController() {
     return PageController(initialPage: OFFSET);
@@ -25,6 +26,7 @@ class Calendar extends StatefulWidget {
   Calendar({
     @required this.view,
     @required this.pageController,
+    @required this.todayReset,
   });
 
   @override
@@ -35,6 +37,20 @@ class _CalendarState extends State<Calendar> {
   Future<dynamic> loadOccupanciesFuture;
   SelectedDate selectedDate = SelectedDate.today();
   int lastPage = OFFSET;
+  int lastTodayReset = 0;
+
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // WARNING: this is probably really bad code
+    if (widget.todayReset > lastTodayReset) {
+      setState(() {
+        lastTodayReset = widget.todayReset;
+        selectedDate = SelectedDate.today();
+      });
+    }
+  }
 
   _CalendarState() {
     loadOccupanciesFuture = this.loadOccupancies();
