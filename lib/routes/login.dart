@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/api_exception.dart';
 import 'package:mobile_scolendar/auth.dart';
+import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/home.dart';
 import 'package:openapi/api.dart';
 
@@ -50,7 +51,8 @@ class _LoginRouteState extends State<LoginRoute> {
     var auth = await Auth.instance();
     await auth.logIn(response);
 
-    Navigator.pushReplacementNamed(context, HomeRoute.ROUTE_NAME);
+    // TODO : choose route programmatically, based on kind
+    Navigator.pushReplacementNamed(context, CalendarRoute.ROUTE_NAME);
   }
 
   Future<SuccessfulLoginResponse> login() async {

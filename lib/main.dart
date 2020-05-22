@@ -15,14 +15,20 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final Future<dynamic> loggedInFuture;
+
+  MyApp()
+      : loggedInFuture = (() async {
+          WidgetsFlutterBinding.ensureInitialized();
+          var auth = await Auth.instance();
+          return await auth.isLoggedIn();
+        })();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: (() async {
-        var auth = await Auth.instance();
-        return await auth.isLoggedIn();
-      })(),
+      future: loggedInFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
 
@@ -51,7 +57,8 @@ class MyApp extends StatelessWidget {
             SubjectsRoute.ROUTE_NAME: (ctx) => SubjectsRoute(),
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
           },
-          initialRoute: loggedIn ? HomeRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
+          initialRoute:
+              loggedIn ? CalendarRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
         );
       },
     );
