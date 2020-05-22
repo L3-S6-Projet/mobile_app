@@ -20,11 +20,12 @@ class HourlyView extends StatelessWidget {
       {@required this.selectedDate,
       @required this.occupancies,
       @required this.days})
-      : week = selectedDate.week().sublist(0, days);
+      : week = (days > 1) ? selectedDate.week() : [selectedDate];
 
   @override
   Widget build(BuildContext context) {
     final cellHeight = MediaQuery.of(context).size.height / 10;
+    print(week);
 
     final events = <WeekViewEvent>[];
 
@@ -45,7 +46,7 @@ class HourlyView extends StatelessWidget {
         final endHour = end.hour + end.minute / 60 + 1;
 
         events.add(WeekViewEvent(
-          day: start.weekday - 1,
+          day: (days > 1) ? start.weekday - 1 : 0,
           hour: startHour,
           length: endHour - startHour,
           occupancy: occupancy,
@@ -149,8 +150,6 @@ class WeekViewBackground extends StatelessWidget {
   }
 
   Widget _column(BuildContext context) {
-    final theme = Theme.of(context);
-
     // BorderSide(width: 1, color: Theme.of(context).dividerColor)
 
     //final border = Border.all(color: theme.dividerColor);

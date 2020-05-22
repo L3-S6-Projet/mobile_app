@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/components/app_drawer.dart';
 import 'package:mobile_scolendar/components/calendar/calendar.dart';

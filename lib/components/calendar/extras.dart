@@ -13,7 +13,7 @@ List<Widget> appBarActions(BuildContext context,
           /*pageController.animateToPage(OFFSET,
               duration: Duration(milliseconds: 400), curve: Curves.easeInOut);*/
 
-          // TODO
+          // TODO: this does not work properly
           pageController.jumpToPage(OFFSET);
         },
       ),
