@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_scolendar/components/app_drawer.dart';
 import 'package:mobile_scolendar/components/calendar/calendar.dart';
 import 'package:mobile_scolendar/components/calendar/extras.dart';
 import 'package:mobile_scolendar/components/calendar/view.dart';
 import 'package:openapi/api.dart';
 
-class CalendarRoute extends StatefulWidget {
-  static const ROUTE_NAME = '/calendar';
+class CalendarDetailsRoute extends StatefulWidget {
+  static const ROUTE_NAME = "/calendar_details";
+
+  final CalendarDetailsParameters args;
+
+  const CalendarDetailsRoute({Key key, @required this.args}) : super(key: key);
 
   @override
-  _CalendarRouteState createState() => _CalendarRouteState();
+  _CalendarDetailsRouteState createState() => _CalendarDetailsRouteState();
 }
 
-class _CalendarRouteState extends State<CalendarRoute> {
+class _CalendarDetailsRouteState extends State<CalendarDetailsRoute> {
   CalendarView view = CalendarView.MONTH;
   PageController pageController = Calendar.buildPageController();
   int todayReset = 0;
@@ -21,7 +24,7 @@ class _CalendarRouteState extends State<CalendarRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scolendar'),
+        title: Text(widget.args.title),
         actions: appBarActions(
           context: context,
           callback: (newView) {
@@ -36,18 +39,41 @@ class _CalendarRouteState extends State<CalendarRoute> {
           },
         ),
       ),
-      drawer: AppDrawer(),
       body: Calendar(
         view: this.view,
         pageController: pageController,
         todayReset: todayReset,
         loadOccupancies: ({start, end, occupanciesPerDay}) async {
-          final apiInstance = OccupanciesApi();
+          if (widget.args.mode == CalendarDetailsMode.TEACHER) {
+            final apiInstance = TeacherApi();
 
-          return await apiInstance.occupanciesGet(
-              start: start, end: end, occupanciesPerDay: occupanciesPerDay);
+            return await apiInstance.teachersIdOccupanciesGet(
+              widget.args.id,
+              start: start,
+              end: end,
+              occupanciesPerDay: occupanciesPerDay,
+            );
+          }
+
+          throw 'Unknown mode.';
         },
       ),
     );
   }
+}
+
+class CalendarDetailsParameters {
+  final String title;
+  final int id;
+  final CalendarDetailsMode mode;
+
+  CalendarDetailsParameters({
+    @required this.title,
+    @required this.id,
+    @required this.mode,
+  });
+}
+
+enum CalendarDetailsMode {
+  TEACHER,
 }

@@ -51,6 +51,10 @@ class _LoginRouteState extends State<LoginRoute> {
     var auth = await Auth.instance();
     await auth.logIn(response);
 
+    final token = defaultApiClient.getAuthentication<ApiKeyAuth>('token');
+    token.apiKey = response.token;
+    token.apiKeyPrefix = 'Bearer';
+
     // TODO : choose route programmatically, based on kind
     Navigator.pushReplacementNamed(context, CalendarRoute.ROUTE_NAME);
   }

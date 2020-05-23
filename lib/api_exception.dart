@@ -40,9 +40,16 @@ String getErrorMessage(String code) {
   return KEYS[code] ?? UNKNOWN_ERROR;
 }
 
-String getErrorMessageFromException(Exception e) {
+String getErrorMessageFromException(Object e) {
+  print(e);
+
   if (e is ApiException) {
     return getErrorMessage(jsonDecode(e.message)['code']);
+  }
+
+  if (e is Exception) {
+    // TODO: localization
+    return e.toString();
   }
 
   return UNKNOWN_ERROR;

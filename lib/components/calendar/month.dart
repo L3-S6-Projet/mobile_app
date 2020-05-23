@@ -83,7 +83,9 @@ class SmallEvent extends StatelessWidget {
         padding: const EdgeInsets.all(4.0),
         margin: const EdgeInsets.symmetric(vertical: 4.0),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : Colors.grey[700],
             borderRadius: BorderRadius.circular(5.0),
             border: Border.all(color: borderColor)),
         child: Text(occupancy.subjectName.capitalize(),

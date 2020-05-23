@@ -18,6 +18,8 @@ class Calendar extends StatefulWidget {
   final CalendarView view;
   final PageController pageController;
   final int todayReset;
+  final Future<Occupancies> Function(
+      {int start, int end, int occupanciesPerDay}) loadOccupancies;
 
   static buildPageController() {
     return PageController(initialPage: OFFSET);
@@ -27,6 +29,7 @@ class Calendar extends StatefulWidget {
     @required this.view,
     @required this.pageController,
     @required this.todayReset,
+    @required this.loadOccupancies,
   });
 
   @override
@@ -52,29 +55,14 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  _CalendarState() {
+  @override
+  void initState() {
+    super.initState();
     loadOccupanciesFuture = this.loadOccupancies();
   }
 
   loadOccupancies() async {
-    final apiInstance = OccupanciesApi();
-    final auth = await Auth.instance();
-
-    final token = apiInstance.apiClient.getAuthentication<ApiKeyAuth>('token');
-    token.apiKey = (await auth.getResponse()).token;
-    token.apiKeyPrefix = 'Bearer';
-
-    // TODO: dynamic loading
-    //var start = 56;
-    //var end = 56;
-    //var occupanciesPerDay = 56;
-
-    try {
-      final response = await apiInstance.occupanciesGet();
-      return OccupanciesWrapper(response);
-    } catch (e) {
-      print("Exception when calling OccupanciesApi->occupanciesGet: $e\n");
-    }
+    return OccupanciesWrapper(await widget.loadOccupancies());
   }
 
   Widget buildView(
@@ -121,6 +109,8 @@ class _CalendarState extends State<Calendar> {
     return FutureBuilder(
       future: loadOccupanciesFuture,
       builder: (context, snapshot) {
+        // TODO: if snapshot hasError
+
         return Column(
           children: [
             Container(

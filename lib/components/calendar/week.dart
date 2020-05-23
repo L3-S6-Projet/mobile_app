@@ -220,7 +220,9 @@ class WeekViewEvent extends StatelessWidget {
       child: Container(
           decoration: BoxDecoration(
             //color: Theme.of(context).primaryColorLight,
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : Colors.grey[700],
             border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(5.0),
           ),

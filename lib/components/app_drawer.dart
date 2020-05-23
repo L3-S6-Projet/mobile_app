@@ -9,7 +9,7 @@ import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
 import 'package:mobile_scolendar/routes/students.dart';
 import 'package:mobile_scolendar/routes/subject.dart';
-import 'package:mobile_scolendar/routes/teachers.dart';
+import 'package:mobile_scolendar/routes/teachers/teachers.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
