@@ -71,6 +71,15 @@ class _CalendarDetailsRouteState extends State<CalendarDetailsRoute> {
               end: end,
               occupanciesPerDay: occupanciesPerDay,
             );
+          } else if (widget.args.mode == CalendarDetailsMode.CLASS) {
+            final apiInstance = ClassesApi();
+
+            return await apiInstance.classesIdOccupanciesGet(
+              widget.args.id,
+              start: start,
+              end: end,
+              occupanciesPerDay: occupanciesPerDay,
+            );
           }
 
           throw 'Unknown mode.';
@@ -96,4 +105,5 @@ enum CalendarDetailsMode {
   TEACHER,
   STUDENT,
   CLASSROOM,
+  CLASS,
 }
