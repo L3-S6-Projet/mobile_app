@@ -7,7 +7,10 @@ import 'package:mobile_scolendar/routes/classroom.dart';
 import 'package:mobile_scolendar/routes/home.dart';
 import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
-import 'package:mobile_scolendar/routes/students.dart';
+import 'package:mobile_scolendar/routes/students/student.dart';
+import 'package:mobile_scolendar/routes/students/student_create.dart';
+import 'package:mobile_scolendar/routes/students/student_edit.dart';
+import 'package:mobile_scolendar/routes/students/students.dart';
 import 'package:mobile_scolendar/routes/subject.dart';
 import 'package:mobile_scolendar/routes/teachers/teacher.dart';
 import 'package:mobile_scolendar/routes/teachers/teacher_create.dart';
@@ -65,17 +68,25 @@ class MyApp extends StatelessWidget {
             WidgetBuilder routeBuilder;
 
             switch (routeSettings.name) {
-              case TeacherRoute.ROUTE_NAME:
-                routeBuilder =
-                    (ctx) => TeacherRoute(args: routeSettings.arguments);
-                break;
               case CalendarDetailsRoute.ROUTE_NAME:
                 routeBuilder = (ctx) =>
                     CalendarDetailsRoute(args: routeSettings.arguments);
                 break;
+              case TeacherRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => TeacherRoute(args: routeSettings.arguments);
+                break;
               case TeacherEditRoute.ROUTE_NAME:
                 routeBuilder =
                     (ctx) => TeacherEditRoute(args: routeSettings.arguments);
+                break;
+              case StudentRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => StudentRoute(args: routeSettings.arguments);
+                break;
+              case StudentEditRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => StudentEditRoute(args: routeSettings.arguments);
                 break;
               default:
                 return null;
@@ -91,13 +102,14 @@ class MyApp extends StatelessWidget {
             ClassroomsRoute.ROUTE_NAME: (ctx) => ClassroomsRoute(),
             SettingsRoute.ROUTE_NAME: (ctx) => SettingsRoute(),
             StudentsRoute.ROUTE_NAME: (ctx) => StudentsRoute(),
+            StudentCreateRoute.ROUTE_NAME: (ctx) => StudentCreateRoute(),
             SubjectsRoute.ROUTE_NAME: (ctx) => SubjectsRoute(),
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
             TeacherCreateRoute.ROUTE_NAME: (ctx) => TeacherCreateRoute(),
           },
           // TODO: change based on user kind
           initialRoute:
-              loggedIn ? TeachersRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
+              loggedIn ? StudentsRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
         );
       },
     );

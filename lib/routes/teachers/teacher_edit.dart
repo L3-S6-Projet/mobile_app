@@ -19,6 +19,7 @@ class _TeacherEditRouteState extends State<TeacherEditRoute> {
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
   bool enabled = true;
   String message;
 
@@ -44,77 +45,88 @@ class _TeacherEditRouteState extends State<TeacherEditRoute> {
         child: Icon(Icons.save, color: Colors.white),
         onPressed: onSubmit,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (message != null)
-                  Text(message,
-                      style: TextStyle(color: Theme.of(context).errorColor)),
-                TextFormField(
-                  enabled: enabled,
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Prénom *',
+      body: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (message != null)
+                    Text(message,
+                        style: TextStyle(color: Theme.of(context).errorColor)),
+                  TextFormField(
+                    enabled: enabled,
+                    controller: firstNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Prénom *',
+                    ),
+                    validator: simpleThreeCharsValidator,
                   ),
-                  validator: simpleThreeCharsValidator,
-                ),
-                TextFormField(
-                  enabled: enabled,
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Nom *',
+                  TextFormField(
+                    enabled: enabled,
+                    controller: lastNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Nom *',
+                    ),
+                    validator: simpleThreeCharsValidator,
                   ),
-                  validator: simpleThreeCharsValidator,
-                ),
-                TextFormField(
-                  enabled: enabled,
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
+                  TextFormField(
+                    enabled: enabled,
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                    ),
                   ),
-                ),
-                TextFormField(
-                  enabled: enabled,
-                  controller: phoneNumberController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Phone number',
+                  TextFormField(
+                    enabled: enabled,
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Phone number',
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                DropdownButton(
-                  hint: const Text('Grade'),
-                  isExpanded: true,
-                  items: [
-                    DropdownMenuItem(
-                        child: const Text('Maître de conférences'),
-                        value: Rank.mACO_),
-                    DropdownMenuItem(
-                        child: const Text('Professeur'), value: Rank.pROF_),
-                    DropdownMenuItem(
-                        child: const Text('PRAG'), value: Rank.pRAG_),
-                    DropdownMenuItem(
-                        child: const Text('ATER'), value: Rank.aTER_),
-                    DropdownMenuItem(
-                        child: const Text('PAST'), value: Rank.pAST_),
-                    DropdownMenuItem(
-                        child: const Text('Moniteur'), value: Rank.mONI_),
-                  ],
-                  value: rank,
-                  onChanged: enabled
-                      ? (newValue) {
-                          setState(() {
-                            rank = newValue;
-                          });
-                        }
-                      : null,
-                ),
-              ],
+                  SizedBox(height: 8.0),
+                  DropdownButton(
+                    hint: const Text('Grade'),
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(
+                          child: const Text('Maître de conférences'),
+                          value: Rank.mACO_),
+                      DropdownMenuItem(
+                          child: const Text('Professeur'), value: Rank.pROF_),
+                      DropdownMenuItem(
+                          child: const Text('PRAG'), value: Rank.pRAG_),
+                      DropdownMenuItem(
+                          child: const Text('ATER'), value: Rank.aTER_),
+                      DropdownMenuItem(
+                          child: const Text('PAST'), value: Rank.pAST_),
+                      DropdownMenuItem(
+                          child: const Text('Moniteur'), value: Rank.mONI_),
+                    ],
+                    value: rank,
+                    onChanged: enabled
+                        ? (newValue) {
+                            setState(() {
+                              rank = newValue;
+                            });
+                          }
+                        : null,
+                  ),
+                  TextFormField(
+                    enabled: enabled,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Nouveau mot de passe',
+                    ),
+                    obscureText: true,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -154,6 +166,8 @@ class _TeacherEditRouteState extends State<TeacherEditRoute> {
     else
       teacherUpdateRequest.phoneNumber = null;
     teacherUpdateRequest.rank = rank;
+    if (passwordController.text.length > 0)
+      teacherUpdateRequest.password = passwordController.text;
 
     try {
       await apiInstance.teachersIdPut(widget.args.id, teacherUpdateRequest);

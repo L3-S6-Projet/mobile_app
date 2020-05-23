@@ -7,7 +7,7 @@ import 'package:mobile_scolendar/routes/class.dart';
 import 'package:mobile_scolendar/routes/classroom.dart';
 import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
-import 'package:mobile_scolendar/routes/students.dart';
+import 'package:mobile_scolendar/routes/students/students.dart';
 import 'package:mobile_scolendar/routes/subject.dart';
 import 'package:mobile_scolendar/routes/teachers/teachers.dart';
 
