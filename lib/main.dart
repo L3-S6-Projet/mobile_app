@@ -3,7 +3,10 @@ import 'package:mobile_scolendar/auth.dart';
 import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/calendar_details.dart';
 import 'package:mobile_scolendar/routes/class.dart';
-import 'package:mobile_scolendar/routes/classroom.dart';
+import 'package:mobile_scolendar/routes/classrooms/classroom.dart';
+import 'package:mobile_scolendar/routes/classrooms/classroom_create.dart';
+import 'package:mobile_scolendar/routes/classrooms/classroom_edit.dart';
+import 'package:mobile_scolendar/routes/classrooms/classrooms.dart';
 import 'package:mobile_scolendar/routes/home.dart';
 import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
@@ -88,6 +91,14 @@ class MyApp extends StatelessWidget {
                 routeBuilder =
                     (ctx) => StudentEditRoute(args: routeSettings.arguments);
                 break;
+              case ClassroomRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => ClassroomRoute(args: routeSettings.arguments);
+                break;
+              case ClassroomEditRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => ClassroomEditRoute(args: routeSettings.arguments);
+                break;
               default:
                 return null;
             }
@@ -100,6 +111,7 @@ class MyApp extends StatelessWidget {
             CalendarRoute.ROUTE_NAME: (ctx) => CalendarRoute(),
             ClassesRoute.ROUTE_NAME: (ctx) => ClassesRoute(),
             ClassroomsRoute.ROUTE_NAME: (ctx) => ClassroomsRoute(),
+            ClassroomCreateRoute.ROUTE_NAME: (ctx) => ClassroomCreateRoute(),
             SettingsRoute.ROUTE_NAME: (ctx) => SettingsRoute(),
             StudentsRoute.ROUTE_NAME: (ctx) => StudentsRoute(),
             StudentCreateRoute.ROUTE_NAME: (ctx) => StudentCreateRoute(),

@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/auth.dart';
 import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/class.dart';
-import 'package:mobile_scolendar/routes/classroom.dart';
+import 'package:mobile_scolendar/routes/classrooms/classrooms.dart';
 import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
 import 'package:mobile_scolendar/routes/students/students.dart';

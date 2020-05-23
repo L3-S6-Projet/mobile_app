@@ -1,3 +1,4 @@
+- I18N : *** Check all UI is in french
 - Calendar : *** selected date circular orange background
 - Calendar : *** dialog
 - Calendar : *** dynamic loading
