@@ -3,6 +3,7 @@ import 'package:mobile_scolendar/auth.dart';
 import 'package:mobile_scolendar/initial_route.dart';
 import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/calendar_details.dart';
+import 'package:mobile_scolendar/routes/calendar_event.dart';
 import 'package:mobile_scolendar/routes/classes/class.dart';
 import 'package:mobile_scolendar/routes/classes/class_create.dart';
 import 'package:mobile_scolendar/routes/classes/class_edit.dart';
@@ -123,6 +124,10 @@ class MyApp extends StatelessWidget {
               case SubjectEditRoute.ROUTE_NAME:
                 routeBuilder =
                     (ctx) => SubjectEditRoute(args: routeSettings.arguments);
+                break;
+              case CalendarEventRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => CalendarEventRoute(args: routeSettings.arguments);
                 break;
               default:
                 return null;

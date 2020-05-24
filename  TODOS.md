@@ -1,7 +1,6 @@
 - Appbar : *** Correct name (instead of Scolendar everywhere) for all root pages
 - I18N : *** Check all UI is in french
 - Calendar : *** selected date circular orange background
-- Calendar : *** dialog
 - Calendar : *** dynamic loading
 - Subjects : *** check why the returned teachers are not the correct ones
 

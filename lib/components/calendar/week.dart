@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/components/calendar/occupancies_wrapper.dart';
 import 'package:mobile_scolendar/components/calendar/partition.dart';
 import 'package:mobile_scolendar/components/calendar/selected_date.dart';
+import 'package:mobile_scolendar/routes/calendar_event.dart';
 import 'package:openapi/api.dart';
 import 'package:mobile_scolendar/utils.dart';
 
@@ -217,18 +218,26 @@ class WeekViewEvent extends StatelessWidget {
           1,
       height: length * cellHeight,
       width: (cellWidth / this.width) - 2,
-      child: Container(
-          decoration: BoxDecoration(
-            //color: Theme.of(context).primaryColorLight,
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Colors.grey[700],
-            border: Border.all(color: Theme.of(context).dividerColor),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          padding: const EdgeInsets.all(4.0),
-          child: Text(occupancy.subjectName.capitalize(),
-              style: TextStyle(fontSize: 12.0))),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            CalendarEventRoute.ROUTE_NAME,
+            arguments: CalendarEventRouteArguments(occupancy),
+          );
+        },
+        child: Container(
+            decoration: BoxDecoration(
+              //color: Theme.of(context).primaryColorLight,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white
+                  : Colors.grey[700],
+              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            padding: const EdgeInsets.all(4.0),
+            child: Text(occupancy.subjectName.capitalize(),
+                style: TextStyle(fontSize: 12.0))),
+      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/components/calendar/occupancies_wrapper.dart';
 import 'package:mobile_scolendar/components/calendar/selected_date.dart';
+import 'package:mobile_scolendar/routes/calendar_event.dart';
 import 'package:openapi/api.dart';
 import 'package:mobile_scolendar/utils.dart';
 
@@ -79,16 +80,25 @@ class SmallEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderColor = Theme.of(context).dividerColor;
 
-    return Container(
-        padding: const EdgeInsets.all(4.0),
-        margin: const EdgeInsets.symmetric(vertical: 4.0),
-        decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Colors.grey[700],
-            borderRadius: BorderRadius.circular(5.0),
-            border: Border.all(color: borderColor)),
-        child: Text(occupancy.subjectName.capitalize(),
-            style: TextStyle(fontSize: 12.0), overflow: TextOverflow.ellipsis));
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          CalendarEventRoute.ROUTE_NAME,
+          arguments: CalendarEventRouteArguments(occupancy),
+        );
+      },
+      child: Container(
+          padding: const EdgeInsets.all(4.0),
+          margin: const EdgeInsets.symmetric(vertical: 4.0),
+          decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white
+                  : Colors.grey[700],
+              borderRadius: BorderRadius.circular(5.0),
+              border: Border.all(color: borderColor)),
+          child: Text(occupancy.subjectName.capitalize(),
+              style: TextStyle(fontSize: 12.0),
+              overflow: TextOverflow.ellipsis)),
+    );
   }
 }
