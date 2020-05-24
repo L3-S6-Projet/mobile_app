@@ -3,28 +3,26 @@ import 'package:mobile_scolendar/api_exception.dart';
 import 'package:mobile_scolendar/components/autocomplete_field.dart';
 import 'package:openapi/api.dart';
 
-class StudentCreateRoute extends StatefulWidget {
-  static const ROUTE_NAME = "/student/create";
+class SubjectCreateRoute extends StatefulWidget {
+  static const ROUTE_NAME = "/subject/create";
 
   @override
-  _StudentCreateRouteState createState() => _StudentCreateRouteState();
+  _SubjectCreateRouteState createState() => _SubjectCreateRouteState();
 }
 
-class _StudentCreateRouteState extends State<StudentCreateRoute> {
+class _SubjectCreateRouteState extends State<SubjectCreateRoute> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
+  final nameController = TextEditingController();
   bool enabled = true;
   String message;
 
-  Rank rank = Rank.pROF_;
-
   ClassWithId selectedClass;
+  TeacherListResponseTeachers selectedTeacher;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Nouvel étudiant')),
+      appBar: AppBar(title: const Text('Nouvelle unité d\'enseignement')),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save, color: Colors.white),
         onPressed: onSubmit,
@@ -42,15 +40,7 @@ class _StudentCreateRouteState extends State<StudentCreateRoute> {
                       style: TextStyle(color: Theme.of(context).errorColor)),
                 TextFormField(
                   enabled: enabled,
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Prénom *',
-                  ),
-                  validator: simpleThreeCharsValidator,
-                ),
-                TextFormField(
-                  enabled: enabled,
-                  controller: lastNameController,
+                  controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Nom *',
                   ),
@@ -80,6 +70,34 @@ class _StudentCreateRouteState extends State<StudentCreateRoute> {
                   getLabel: (classWithId) => classWithId?.name ?? "",
                   validationMessage: 'Une classe doit être sélectionnée',
                 ),
+                AutoCompleteField(
+                  enabled: enabled,
+                  title: 'Enseignant responsable *',
+                  loadItems: (query, page) async {
+                    final apiInstance = TeacherApi();
+                    final response =
+                        await apiInstance.teachersGet(query: query, page: page);
+                    return response.teachers;
+                  },
+                  itemBuilder: (context, teacher, onTap) {
+                    return ListTile(
+                      title: Text('${teacher.firstName} ${teacher.lastName}'),
+                      onTap: onTap,
+                    );
+                  },
+                  initialLabel: null,
+                  onChange: (newTeacher) {
+                    setState(() {
+                      selectedTeacher = newTeacher;
+                    });
+                  },
+                  getLabel: (teacher) {
+                    if (teacher == null) return "";
+                    return '${teacher.firstName} ${teacher.lastName}';
+                  },
+                  validationMessage:
+                      'Un enseignant responsable doit être sélectionnée',
+                ),
               ],
             ),
           ),
@@ -105,19 +123,19 @@ class _StudentCreateRouteState extends State<StudentCreateRoute> {
       enabled = false;
     });
 
-    var apiInstance = StudentsApi();
+    var apiInstance = SubjectsApi();
 
-    var studentCreationRequest = StudentCreationRequest();
+    var subject = Subject();
 
-    studentCreationRequest.firstName = firstNameController.text;
-    studentCreationRequest.lastName = lastNameController.text;
-    studentCreationRequest.classId = selectedClass.id;
+    subject.name = nameController.text;
+    subject.classId = selectedClass.id;
+    subject.teacherInChargeId = selectedTeacher.id;
 
     try {
-      var result = await apiInstance.studentsPost(studentCreationRequest);
+      var result = await apiInstance.subjectsPost(subject);
       Navigator.pop(context, result);
     } catch (e) {
-      print("Exception when calling StudentsApi->studentsPost: $e\n");
+      print("Exception when calling TeacherApi->teachersPost: $e\n");
 
       setState(() {
         enabled = true;

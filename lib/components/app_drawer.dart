@@ -6,7 +6,7 @@ import 'package:mobile_scolendar/routes/classrooms/classrooms.dart';
 import 'package:mobile_scolendar/routes/login.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
 import 'package:mobile_scolendar/routes/students/students.dart';
-import 'package:mobile_scolendar/routes/subject.dart';
+import 'package:mobile_scolendar/routes/subjects/subjects.dart';
 import 'package:mobile_scolendar/routes/teachers/teachers.dart';
 
 class AppDrawer extends StatefulWidget {

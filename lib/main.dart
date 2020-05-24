@@ -17,7 +17,10 @@ import 'package:mobile_scolendar/routes/students/student.dart';
 import 'package:mobile_scolendar/routes/students/student_create.dart';
 import 'package:mobile_scolendar/routes/students/student_edit.dart';
 import 'package:mobile_scolendar/routes/students/students.dart';
-import 'package:mobile_scolendar/routes/subject.dart';
+import 'package:mobile_scolendar/routes/subjects/subject.dart';
+import 'package:mobile_scolendar/routes/subjects/subject_create.dart';
+import 'package:mobile_scolendar/routes/subjects/subject_edit.dart';
+import 'package:mobile_scolendar/routes/subjects/subjects.dart';
 import 'package:mobile_scolendar/routes/teachers/teacher.dart';
 import 'package:mobile_scolendar/routes/teachers/teacher_create.dart';
 import 'package:mobile_scolendar/routes/teachers/teacher_edit.dart';
@@ -110,6 +113,14 @@ class MyApp extends StatelessWidget {
                 routeBuilder =
                     (ctx) => ClassEditRoute(args: routeSettings.arguments);
                 break;
+              case SubjectRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => SubjectRoute(args: routeSettings.arguments);
+                break;
+              case SubjectEditRoute.ROUTE_NAME:
+                routeBuilder =
+                    (ctx) => SubjectEditRoute(args: routeSettings.arguments);
+                break;
               default:
                 return null;
             }
@@ -128,12 +139,13 @@ class MyApp extends StatelessWidget {
             StudentsRoute.ROUTE_NAME: (ctx) => StudentsRoute(),
             StudentCreateRoute.ROUTE_NAME: (ctx) => StudentCreateRoute(),
             SubjectsRoute.ROUTE_NAME: (ctx) => SubjectsRoute(),
+            SubjectCreateRoute.ROUTE_NAME: (ctx) => SubjectCreateRoute(),
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
             TeacherCreateRoute.ROUTE_NAME: (ctx) => TeacherCreateRoute(),
           },
           // TODO: change based on user kind
           initialRoute:
-              loggedIn ? StudentsRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
+              loggedIn ? SubjectsRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
         );
       },
     );

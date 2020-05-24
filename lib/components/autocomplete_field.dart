@@ -9,10 +9,11 @@ class AutoCompleteField extends StatefulWidget {
   final Future<List> Function(String query, int page) loadItems;
   final Widget Function(
       BuildContext context, dynamic item, GestureTapCallback onTap) itemBuilder;
-  final dynamic initialItem;
+  final String initialLabel;
   final Function(dynamic selectedItem) onChange;
   final String Function(dynamic selectedItem) getLabel;
   final String validationMessage;
+  final bool allowEmpty;
 
   const AutoCompleteField({
     Key key,
@@ -20,25 +21,24 @@ class AutoCompleteField extends StatefulWidget {
     @required this.title,
     @required this.loadItems,
     @required this.itemBuilder,
-    this.initialItem,
+    this.initialLabel,
     @required this.onChange,
     @required this.getLabel,
     @required this.validationMessage,
+    this.allowEmpty = false,
   }) : super(key: key);
 
   @override
   _AutoCompleteFieldState createState() =>
-      _AutoCompleteFieldState(initialItem, getLabel(initialItem));
+      _AutoCompleteFieldState(initialLabel);
 }
 
 class _AutoCompleteFieldState extends State<AutoCompleteField> {
-  final initialValue;
   final controller;
-  bool oneSelected;
+  bool oneSelected = false;
 
-  _AutoCompleteFieldState(this.initialValue, initialLabel)
-      : controller = TextEditingController(text: initialLabel),
-        oneSelected = initialValue != null;
+  _AutoCompleteFieldState(initialLabel)
+      : controller = TextEditingController(text: initialLabel);
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +50,13 @@ class _AutoCompleteFieldState extends State<AutoCompleteField> {
         labelText: widget.title,
       ),
       validator: (value) {
-        if (oneSelected) return null;
+        if (oneSelected || widget.allowEmpty) return null;
         return widget.validationMessage;
       },
       onTap: () async {
         final result = await showSearch(
             context: context,
-            delegate: CustomSearchDelegate(
+            delegate: AutoCompleteSearchDelegate(
               loadItems: widget.loadItems,
               itemBuilder: widget.itemBuilder,
             ));
@@ -71,12 +71,12 @@ class _AutoCompleteFieldState extends State<AutoCompleteField> {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate {
+class AutoCompleteSearchDelegate extends SearchDelegate {
   final Future<List> Function(String query, int page) loadItems;
   final Widget Function(
       BuildContext context, dynamic item, GestureTapCallback onTap) itemBuilder;
 
-  CustomSearchDelegate({
+  AutoCompleteSearchDelegate({
     @required this.loadItems,
     @required this.itemBuilder,
   });
