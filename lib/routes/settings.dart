@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/api_exception.dart';
+import 'package:mobile_scolendar/auth.dart';
 import 'package:mobile_scolendar/components/app_drawer.dart';
 import 'package:openapi/api.dart';
 
 class SettingsRoute extends StatelessWidget {
   static const ROUTE_NAME = '/settings';
+  Future<SuccessfulLoginResponse> userFuture;
+
+  SettingsRoute() {
+    userFuture = this.loadUser();
+  }
+
+  Future<SuccessfulLoginResponse> loadUser() async {
+    final auth = await Auth.instance();
+    return await auth.getResponse();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,38 +24,46 @@ class SettingsRoute extends StatelessWidget {
         title: const Text('Scolendar'),
       ),
       drawer: AppDrawer(),
-      body: Builder(
-        builder: (context) => Container(
-            height: double.maxFinite,
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                ListTile(
-                  title: Text('Changer mon mot de passe'),
-                  onTap: () async {
-                    final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                UpdatePassword()));
+      body: FutureBuilder(
+          future: userFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+              return Container();
 
-                    if (result == null || !result) return;
+            final isAdmin = snapshot.data.user.kind == Role.aDM_;
 
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Mot de passe mis-à-jour.')));
-                  },
-                ),
-                ListTile(
-                  title: Text('Supprimer toutes les données du serveur'),
-                  onTap: () {
-                    // TODO
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text('Non implémenté pour le moment.')));
-                  },
-                ),
-              ],
-            )),
-      ),
+            return Container(
+                height: double.maxFinite,
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    ListTile(
+                      title: Text('Changer mon mot de passe'),
+                      onTap: () async {
+                        final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    UpdatePassword()));
+
+                        if (result == null || !result) return;
+
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text('Mot de passe mis-à-jour.')));
+                      },
+                    ),
+                    if (isAdmin)
+                      ListTile(
+                        title: Text('Supprimer toutes les données du serveur'),
+                        onTap: () {
+                          // TODO
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('Non implémenté pour le moment.')));
+                        },
+                      ),
+                  ],
+                ));
+          }),
     );
   }
 }

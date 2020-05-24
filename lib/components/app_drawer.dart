@@ -54,6 +54,7 @@ class _AppDrawerState extends State<AppDrawer> {
               Icon(Icons.calendar_today),
               'Emploi du temps'
             ],
+            SettingsRoute.ROUTE_NAME: [Icon(Icons.settings), 'Paramètres'],
           };
       }
       return ListView(padding: EdgeInsets.zero, children: [
