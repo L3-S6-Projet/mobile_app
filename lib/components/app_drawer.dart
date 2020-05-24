@@ -5,6 +5,7 @@ import 'package:mobile_scolendar/routes/classes/classes.dart';
 import 'package:mobile_scolendar/routes/classrooms/classrooms.dart';
 import 'package:mobile_scolendar/routes/home.dart';
 import 'package:mobile_scolendar/routes/login.dart';
+import 'package:mobile_scolendar/routes/my_subjects.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
 import 'package:mobile_scolendar/routes/students/students.dart';
 import 'package:mobile_scolendar/routes/subjects/subjects.dart';
@@ -53,6 +54,10 @@ class _AppDrawerState extends State<AppDrawer> {
             CalendarRoute.ROUTE_NAME: [
               Icon(Icons.calendar_today),
               'Emploi du temps'
+            ],
+            MySubjectsRoute.ROUTE_NAME: [
+              Icon(Icons.library_books),
+              'My subjects'
             ],
             SettingsRoute.ROUTE_NAME: [Icon(Icons.settings), 'Paramètres'],
           };

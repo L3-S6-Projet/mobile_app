@@ -13,6 +13,7 @@ import 'package:mobile_scolendar/routes/classrooms/classroom_edit.dart';
 import 'package:mobile_scolendar/routes/classrooms/classrooms.dart';
 import 'package:mobile_scolendar/routes/home.dart';
 import 'package:mobile_scolendar/routes/login.dart';
+import 'package:mobile_scolendar/routes/my_subjects.dart';
 import 'package:mobile_scolendar/routes/settings.dart';
 import 'package:mobile_scolendar/routes/students/student.dart';
 import 'package:mobile_scolendar/routes/students/student_create.dart';
@@ -144,6 +145,7 @@ class MyApp extends StatelessWidget {
             SubjectCreateRoute.ROUTE_NAME: (ctx) => SubjectCreateRoute(),
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
             TeacherCreateRoute.ROUTE_NAME: (ctx) => TeacherCreateRoute(),
+            MySubjectsRoute.ROUTE_NAME: (ctx) => MySubjectsRoute(),
           },
           initialRoute: initialRouteName(snapshot.data?.response),
         );
