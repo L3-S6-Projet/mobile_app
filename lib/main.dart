@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scolendar/auth.dart';
+import 'package:mobile_scolendar/initial_route.dart';
 import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/calendar_details.dart';
 import 'package:mobile_scolendar/routes/classes/class.dart';
@@ -45,9 +46,11 @@ class MyApp extends StatelessWidget {
                 defaultApiClient.getAuthentication<ApiKeyAuth>('token');
             token.apiKey = (await auth.getResponse()).token;
             token.apiKeyPrefix = 'Bearer';
+
+            return LoginStatus(true, await auth.getResponse());
           }
 
-          return loggedIn;
+          return LoginStatus(false, null);
         })();
 
   // This widget is the root of your application.
@@ -56,9 +59,8 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: loggedInFuture,
       builder: (context, snapshot) {
+        // TODO: splash screen
         if (!snapshot.hasData) return Container();
-
-        final loggedIn = snapshot.data;
 
         return MaterialApp(
           title: 'Flutter Demo',
@@ -143,11 +145,16 @@ class MyApp extends StatelessWidget {
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
             TeacherCreateRoute.ROUTE_NAME: (ctx) => TeacherCreateRoute(),
           },
-          // TODO: change based on user kind
-          initialRoute:
-              loggedIn ? SubjectsRoute.ROUTE_NAME : LoginRoute.ROUTE_NAME,
+          initialRoute: initialRouteName(snapshot.data?.response),
         );
       },
     );
   }
+}
+
+class LoginStatus {
+  final bool loggedIn;
+  final SuccessfulLoginResponse response;
+
+  LoginStatus(this.loggedIn, this.response);
 }

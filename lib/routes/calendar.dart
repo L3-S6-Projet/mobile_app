@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_scolendar/auth.dart';
 import 'package:mobile_scolendar/components/app_drawer.dart';
 import 'package:mobile_scolendar/components/calendar/calendar.dart';
 import 'package:mobile_scolendar/components/calendar/extras.dart';
@@ -42,10 +43,33 @@ class _CalendarRouteState extends State<CalendarRoute> {
         pageController: pageController,
         todayReset: todayReset,
         loadOccupancies: ({start, end, occupanciesPerDay}) async {
-          final apiInstance = OccupanciesApi();
+          final auth = await Auth.instance();
+          final user = await auth.getResponse();
 
-          return await apiInstance.occupanciesGet(
-              start: start, end: end, occupanciesPerDay: occupanciesPerDay);
+          if (user.user.kind == Role.aDM_) {
+            final apiInstance = OccupanciesApi();
+
+            return await apiInstance.occupanciesGet(
+                start: start, end: end, occupanciesPerDay: occupanciesPerDay);
+          } else if (user.user.kind == Role.tEA_) {
+            final apiInstance = RoleProfessorApi();
+
+            return await apiInstance.teachersIdOccupanciesGet(
+              user.user.id,
+              start: start,
+              end: end,
+              occupanciesPerDay: occupanciesPerDay,
+            );
+          } else {
+            final apiInstance = RoleStudentApi();
+
+            return await apiInstance.studentsIdOccupanciesGet(
+              user.user.id,
+              start: start,
+              end: end,
+              occupanciesPerDay: occupanciesPerDay,
+            );
+          }
         },
       ),
     );
