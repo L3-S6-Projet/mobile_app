@@ -4,6 +4,7 @@ import 'package:mobile_scolendar/components/app_drawer.dart';
 import 'package:mobile_scolendar/components/calendar/calendar.dart';
 import 'package:mobile_scolendar/components/calendar/extras.dart';
 import 'package:mobile_scolendar/components/calendar/view.dart';
+import 'package:mobile_scolendar/routes/calendar_event_create.dart';
 import 'package:openapi/api.dart';
 
 class CalendarRoute extends StatefulWidget {
@@ -17,6 +18,19 @@ class _CalendarRouteState extends State<CalendarRoute> {
   CalendarView view = CalendarView.MONTH;
   PageController pageController = Calendar.buildPageController();
   int todayReset = 0;
+
+  Future<SuccessfulLoginResponse> loginResponseFuture;
+
+  Future<SuccessfulLoginResponse> loadLoginResponse() async {
+    final auth = await Auth.instance();
+    return await auth.getResponse();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loginResponseFuture = loadLoginResponse();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +52,21 @@ class _CalendarRouteState extends State<CalendarRoute> {
         ),
       ),
       drawer: AppDrawer(),
+      floatingActionButton: FutureBuilder(
+          future: loginResponseFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done ||
+                snapshot.hasError ||
+                snapshot.data.user.kind != Role.tEA_) return Container();
+            return FloatingActionButton(
+              onPressed: () {
+                // TODO: refresh on created + updated
+                Navigator.pushNamed(
+                    context, CalendarEventCreateRoute.ROUTE_NAME);
+              },
+              child: Icon(Icons.add, color: Colors.white),
+            );
+          }),
       body: Calendar(
         view: this.view,
         pageController: pageController,

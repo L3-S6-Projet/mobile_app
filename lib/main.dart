@@ -4,6 +4,7 @@ import 'package:mobile_scolendar/initial_route.dart';
 import 'package:mobile_scolendar/routes/calendar.dart';
 import 'package:mobile_scolendar/routes/calendar_details.dart';
 import 'package:mobile_scolendar/routes/calendar_event.dart';
+import 'package:mobile_scolendar/routes/calendar_event_create.dart';
 import 'package:mobile_scolendar/routes/classes/class.dart';
 import 'package:mobile_scolendar/routes/classes/class_create.dart';
 import 'package:mobile_scolendar/routes/classes/class_edit.dart';
@@ -151,6 +152,8 @@ class MyApp extends StatelessWidget {
             TeachersRoute.ROUTE_NAME: (ctx) => TeachersRoute(),
             TeacherCreateRoute.ROUTE_NAME: (ctx) => TeacherCreateRoute(),
             MySubjectsRoute.ROUTE_NAME: (ctx) => MySubjectsRoute(),
+            CalendarEventCreateRoute.ROUTE_NAME: (ctx) =>
+                CalendarEventCreateRoute(),
           },
           initialRoute: initialRouteName(snapshot.data?.response),
         );
